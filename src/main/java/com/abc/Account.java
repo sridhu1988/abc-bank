@@ -2,6 +2,7 @@ package com.abc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Account {
 
@@ -46,16 +47,35 @@ public void withdraw(double amount) {
 //                if (amount <= 4000)
 //                    return 20;
             case MAXI_SAVINGS:
-                if (amount <= 1000)
-                    return amount * 0.02;
-                if (amount <= 2000)
-                    return 20 + (amount-1000) * 0.05;
-                return 70 + (amount-2000) * 0.1;
+               if(isMoneyWithdrawnPastTenDays())
+                    return amount * 0.001;
+                else
+                    return amount * 0.005;
             default:
                 return amount * 0.001;
         }
     }
 
+    // This method checks if there are any transactions for the past 10 days.
+    // Returns true if there are any, else returns false
+    
+    public boolean isMoneyWithdrawnPastTenDays(){
+        
+        Date date = new Date();
+        for(Transaction trans : transactions){
+            if(getDaysBetween(trans.getTransactionDate(), date)<10 && trans.getTransactionType().equals("WITHDRAW"){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // This method gets the number of days between transactions and current date
+    
+    public int getDaysBetween(Date transDate, Date currDate){
+        return daysBetween = (currDate.getTime()- transDate.getTime())/(1000 * 60 * 60 * 24);
+    }
+    
     public double sumTransactions() {
        return checkIfTransactionsExist(true);
     }

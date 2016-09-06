@@ -63,7 +63,7 @@ public void withdraw(double amount) {
         
         Date date = new Date();
         for(Transaction trans : transactions){
-            if(getDaysBetween(trans.getTransactionDate(), date)<10 && trans.getTransactionType().equals("WITHDRAW"){
+            if(getDaysBetween(trans.getTransactionDate(), date)<10 && trans.getTransactionType().equalsIgnoreCase("WITHDRAW"){
                 return true;
             }
         }

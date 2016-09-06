@@ -22,7 +22,7 @@ public class Account {
         if (amount <= 0) {
             throw new IllegalArgumentException("amount must be greater than zero");
         } else {
-            transactions.add(new Transaction(amount));
+            transactions.add(new Transaction(amount),"DEPOSIT");
         }
     }
 
@@ -36,7 +36,7 @@ public void withdraw(double amount) {
     }
     else
     {
-        transactions.add(new Transaction(-amount));
+        transactions.add(new Transaction(-amount),"WITHDRAW");
     }
 }
 
@@ -77,7 +77,11 @@ public void withdraw(double amount) {
             default:
                 interest= (amount * 0.001)/365;
         }
-        
+        Date currDate = newDate();
+        for(Transaction trans: transactions){
+            if(!trans.getTransactionDate().equals(currDate)&& trans.getTransactionType().equalsIgnoreCase("INTEREST"))
+                transactions.add(new Transaction(interest),"INTEREST");    
+        }
         return interest;
     }
 

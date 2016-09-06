@@ -29,7 +29,12 @@ public class Account {
 public void withdraw(double amount) {
     if (amount <= 0) {
         throw new IllegalArgumentException("amount must be greater than zero");
-    } else 
+    } 
+    // Added condition for checking the amount should be lesser than account balance
+    else if(amount> sumTransactions()){
+        throw new IllegalArgumentException("The amount you entered is greater than your account balance");
+    }
+    else
     {
         transactions.add(new Transaction(-amount));
     }

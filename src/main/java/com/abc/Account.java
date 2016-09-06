@@ -48,9 +48,6 @@ public void withdraw(double amount) {
                     return amount * 0.001;
                 else
                     return 1 + (amount-1000) * 0.002;
-//            case SUPER_SAVINGS:
-//                if (amount <= 4000)
-//                    return 20;
             case MAXI_SAVINGS:
                if(isMoneyWithdrawnPastTenDays())
                     return amount * 0.001;
@@ -59,6 +56,29 @@ public void withdraw(double amount) {
             default:
                 return amount * 0.001;
         }
+    }
+    
+    // This method calculates daily rate of interest earned from the accounts
+    
+    public double interestEarnedDaily() {
+        double amount = sumTransactions();
+        double interest;
+        switch(accountType){
+            case SAVINGS:
+                if (amount <= 1000)
+                    interest= (amount * 0.001)/365;
+                else
+                    interest= (1 + (amount-1000) * 0.002)/365;
+            case MAXI_SAVINGS:
+               if(isMoneyWithdrawnPastTenDays())
+                    interest= (amount * 0.001)/365;
+                else
+                    interest= (amount * 0.005)/365;
+            default:
+                interest= (amount * 0.001)/365;
+        }
+        
+        return interest;
     }
 
     // This method checks if there are any transactions for the past 10 days.

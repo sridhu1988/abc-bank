@@ -36,8 +36,13 @@ public class Bank {
 
     public String getFirstCustomer() {
         try {
-            customers = null;
-            return customers.get(0).getName();
+            //Changed the logic behind getting the first customer from the list
+           if(customers != null && customers.size()!=0){
+               return customers.get(0).getName();
+           }
+           else{
+               return "Customer List is empty";
+           }
         } catch (Exception e){
             e.printStackTrace();
             return "Error";

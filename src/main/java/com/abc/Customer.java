@@ -81,8 +81,7 @@ public class Customer {
     public boolean transferAmount(Account fromAccount, Account toAccount, double amount){
         
         if (amount <= 0) {
- +			throw new IllegalArgumentException(
- +					"The amount must be greater than 0");
+ 			throw new IllegalArgumentException("The amount must be greater than 0");
         }
         else{
         

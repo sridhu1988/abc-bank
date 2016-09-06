@@ -10,9 +10,10 @@ public class Transaction {
     
     private String transactionType;
 
-    public Transaction(double amount) {
+    public Transaction(double amount, String transactionType) {
         this.amount = amount;
         this.transactionDate = DateProvider.getInstance().now();
+        this.transactionType=transactionType;
     }
     
     public double getAmount(){

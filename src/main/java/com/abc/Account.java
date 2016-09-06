@@ -2,6 +2,7 @@ package com.abc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Account {
 
@@ -21,15 +22,21 @@ public class Account {
         if (amount <= 0) {
             throw new IllegalArgumentException("amount must be greater than zero");
         } else {
-            transactions.add(new Transaction(amount));
+            transactions.add(new Transaction(amount),"DEPOSIT");
         }
     }
 
 public void withdraw(double amount) {
     if (amount <= 0) {
         throw new IllegalArgumentException("amount must be greater than zero");
-    } else {
-        transactions.add(new Transaction(-amount));
+    } 
+    // Added condition for checking the amount should be lesser than account balance
+    else if(amount> sumTransactions()){
+        throw new IllegalArgumentException("The amount you entered is greater than your account balance");
+    }
+    else
+    {
+        transactions.add(new Transaction(-amount),"WITHDRAW");
     }
 }
 
@@ -41,20 +48,63 @@ public void withdraw(double amount) {
                     return amount * 0.001;
                 else
                     return 1 + (amount-1000) * 0.002;
-//            case SUPER_SAVINGS:
-//                if (amount <= 4000)
-//                    return 20;
             case MAXI_SAVINGS:
-                if (amount <= 1000)
-                    return amount * 0.02;
-                if (amount <= 2000)
-                    return 20 + (amount-1000) * 0.05;
-                return 70 + (amount-2000) * 0.1;
+               if(isMoneyWithdrawnPastTenDays())
+                    return amount * 0.001;
+                else
+                    return amount * 0.005;
             default:
                 return amount * 0.001;
         }
     }
+    
+    // This method calculates daily rate of interest earned from the accounts
+    
+    public double interestEarnedDaily() {
+        double amount = sumTransactions();
+        double interest;
+        switch(accountType){
+            case SAVINGS:
+                if (amount <= 1000)
+                    interest= (amount * 0.001)/365;
+                else
+                    interest= (1 + (amount-1000) * 0.002)/365;
+            case MAXI_SAVINGS:
+               if(isMoneyWithdrawnPastTenDays())
+                    interest= (amount * 0.001)/365;
+                else
+                    interest= (amount * 0.005)/365;
+            default:
+                interest= (amount * 0.001)/365;
+        }
+        Date currDate = newDate();
+        for(Transaction trans: transactions){
+            if(!trans.getTransactionDate().equals(currDate)&& trans.getTransactionType().equalsIgnoreCase("INTEREST"))
+                transactions.add(new Transaction(interest),"INTEREST");    
+        }
+        return interest;
+    }
 
+    // This method checks if there are any transactions for the past 10 days.
+    // Returns true if there are any, else returns false
+    
+    public boolean isMoneyWithdrawnPastTenDays(){
+        
+        Date date = new Date();
+        for(Transaction trans : transactions){
+            if(getDaysBetween(trans.getTransactionDate(), date)<10 && trans.getTransactionType().equalsIgnoreCase("WITHDRAW"){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // This method gets the number of days between transactions and current date
+    
+    public int getDaysBetween(Date transDate, Date currDate){
+        return daysBetween = (currDate.getTime()- transDate.getTime())/(1000 * 60 * 60 * 24);
+    }
+    
     public double sumTransactions() {
        return checkIfTransactionsExist(true);
     }

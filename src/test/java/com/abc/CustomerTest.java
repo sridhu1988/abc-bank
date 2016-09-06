@@ -54,4 +54,59 @@ public class CustomerTest {
         oscar.openAccount(new Account(Account.CHECKING));
         assertEquals(3, oscar.getNumberOfAccounts());
     }
+    
+    @Test
+ 	public void testForMulSavingsAccounts() {
+ 		Customer oscar = new Customer("Oscar").openAccount(new Account(Account.SAVINGS));
+ 		oscar.openAccount(new Account(Account.SAVINGS));
+ 		assertEquals(2, oscar.getNumberOfAccounts());
+ 	}
+ 
+ 	@Test
+ 	public void testForMulCheckingAccounts() {
+ 		Customer oscar = new Customer("Oscar").openAccount(new Account(Account.CHECKING));
+ 		oscar.openAccount(new Account(Account.CHECKING));
+ 		assertEquals(2, oscar.getNumberOfAccounts());
+ 	}
+ 
+ 
+ 	@Test
+ 	public void testMulMaxiSavingsAccounts() {
+ 		Customer oscar = new Customer("Oscar").openAccount(new Account(Account.MAXI_SAVINGS));
+ 		oscar.openAccount(new Account(Account.MAXI_SAVINGS));
+ 		assertEquals(2, oscar.getNumberOfAccounts());
+ 	}
+ 
+	@Test
+ 	public void testSavingsInterest() {
+ 
+ 		Account savingsAccount = new Account(Account.SAVINGS);
+ 
+ 		Customer henry = new Customer("Henry").openAccount(savingsAccount);
+ 
+ 		savingsAccount.deposit(5000.0);
+ 		assertEquals(9.0, savingsAccount.interestEarned(), Constants.DOUBLE_DELTA);
+ 	}
+ 
+ 	@Test 
+ 	public void testCheckingsInterest() {
+ 
+ 		Account checkingAccount = new Account(Account.CHECKING);
+ 
+ 		Customer henry = new Customer("Henry").openAccount(checkingAccount);
+ 
+ 		checkingAccount.deposit(5000.0);
+ 		assertEquals(5.0, checkingAccount.interestEarned(), Constants.DOUBLE_DELTA);
+ 	}
+ 
+ 	@Test 
+ 	public void testMaxiSavingsInterest() {
+ 
+ 		Account maxiSavingsAccount = new Account(Account.MAXI_SAVINGS);
+ 
+ 		Customer henry = new Customer("Henry").openAccount(maxiSavingsAccount);
+ 
+ 		maxiSavingsAccount.deposit(5000.00);
+ 		assertEquals(250.00, maxiSavingsAccount.interestEarned(), Constants.DOUBLE_DELTA);
+ 	}
 }

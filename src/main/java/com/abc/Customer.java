@@ -75,4 +75,28 @@ public class Customer {
     private String toDollars(double d){
         return String.format("$%,.2f", abs(d));
     }
+    
+    // This method allows customer to transfer money between their accounts
+    
+    public boolean transferAmount(Account fromAccount, Account toAccount, double amount){
+        
+        if (amount <= 0) {
+ 			throw new IllegalArgumentException("The amount must be greater than 0");
+        }
+        else{
+        
+        if(accounts.contains(fromAccount)&&accounts.contains(toAccount)){
+                   if (amount > fromAccount.sumTransactions()) {
+                        throw new Exception("No suffecient money in your account");
+                    }
+                    else{
+                        synchronized(this){ // Putting the transactions in synchronized block to avoid deadlocks
+                            fromAccount.withdraw(amount);
+                            toAccount.deposit(amount);
+                            return true;
+                        }
+                    }
+            return false;        
+    }
+        }
 }
